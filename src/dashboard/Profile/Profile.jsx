@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import useProvider from "../../hooks/useProvider";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import PageTitle from "../../components/PageTitle/PageTitle";
@@ -9,21 +8,15 @@ import districts from "../../assets/resources/districts.json"
 import divisions from "../../assets/resources/divisions.json"
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import useUser from "../../hooks/useUser";
 
 const Profile = () => {
     const axiosSecure = useAxiosSecure();
   const {successNotify,user} = useProvider()
     const imagebbApi = import.meta.env.VITE_IMGBBAPI
   const imgbburl = `https://api.imgbb.com/1/upload?key=${imagebbApi}`
-  
-    const {data,isLoading,refetch}= useQuery({
-        queryKey: ['profile'],
-        queryFn: async()=>{
-            const res =await axiosSecure.get(`/user?email=${user?.email}`)
-            return res.data
-        }
-    })
+  const {data,isLoading,refetch} = useUser()
+   
     const handleEditProfile=(e)=>{
         e.preventDefault()
         const form = e.target
@@ -53,18 +46,17 @@ const Profile = () => {
           toast.error('Something went wrong!');
           toast.dismiss(toastId);
         })
-        .catch((e) => {
+        .catch(() => {
           toast.error('Something went wrong!');
           toast.dismiss(toastId);
         });
        })
-       .catch(e=>{
+       .catch(()=>{
         toast.dismiss(toastId);
         // toast.error('Keep eyes open!');
        
        })
     }
-
     if (isLoading) {
         return <LoadingLotie></LoadingLotie>
     }

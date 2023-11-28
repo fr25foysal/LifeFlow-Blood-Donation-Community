@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { MdDashboard } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
-
+import { BiSolidMessageSquareAdd } from "react-icons/bi";
 const DashSideBar = () => {
     const menus = (
         <>
@@ -32,14 +32,13 @@ const DashSideBar = () => {
           <NavLink
             className={({ isActive }) =>
               isActive
-                ? "px-5 border-l-[4px] transition-all border-accent py-2"
+                ? "pl-5 border-l-[4px] transition-all border-accent py-2"
                 : "py-2"
             }
-            to={"/dashboard/something"}
+            to={"/dashboard/create-donation-request"}
           >
             <div className="flex items-center gap-3">
-              <MdDashboard className="text-2xl" /> Dashboard
-            </div>
+              <BiSolidMessageSquareAdd  className="text-2xl" /> Create Request</div>
           </NavLink>
         </>
       );

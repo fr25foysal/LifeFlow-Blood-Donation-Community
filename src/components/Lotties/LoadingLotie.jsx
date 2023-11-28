@@ -10,10 +10,12 @@ const LoadingLotie = () => {
      
       
     return (
-        
+        <div className="flex justify-center items-center">
           <Lottie animationData={loadingLotieGif} style={style} loop={true}  >
             
-        </Lottie>  
+        </Lottie> 
+        </div>
+           
       
         
     );
