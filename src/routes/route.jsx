@@ -8,6 +8,8 @@ import Profile from "../dashboard/Profile/Profile";
 import DashBoard from "../dashboard/Dashboard/DashBoard";
 import Home from "../pages/Home/Home";
 import CreateReq from "../dashboard/CreateReq/CreateReq";
+import UpdateReq from "../dashboard/CreateReq/UpdateReq/UpdateReq";
+import DetailsReq from "../dashboard/DetailsReq/DetailsReq";
 
 const route = createBrowserRouter([
     {
@@ -48,6 +50,16 @@ const route = createBrowserRouter([
             {
                 path: 'create-donation-request',
                 element: <PrivateRoute><CreateReq></CreateReq></PrivateRoute>
+            }
+            ,
+            {
+                path: 'edit-request/:id',
+                element: <PrivateRoute><UpdateReq></UpdateReq></PrivateRoute>
+            }
+            ,
+            {
+                path: 'details-request/:id',
+                element: <PrivateRoute><DetailsReq></DetailsReq></PrivateRoute>
             }
         ]
     }

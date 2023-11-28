@@ -1,29 +1,39 @@
-
-import PageTitle from "../../components/PageTitle/PageTitle";
 import { useForm } from 'react-hook-form';
-import useUser from "../../hooks/useUser";
-import LoadingLotie from "../../components/Lotties/LoadingLotie";
-import upozilas from '../../assets/resources/upozillas.json'
-import districts from '../../assets/resources/districts.json'
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import useProvider from "../../hooks/useProvider";
-const CreateReq = () => {
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import PageTitle from '../../../components/PageTitle/PageTitle';
+import useProvider from '../../../hooks/useProvider';
+import useUser from '../../../hooks/useUser';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import LoadingLotie from '../../../components/Lotties/LoadingLotie';
+import districts from '../../../assets/resources/districts.json'
+import upozilas from '../../../assets/resources/upozillas.json'
+import { data } from 'autoprefixer';
+const UpdateReq = () => {
     const { register, handleSubmit,reset , formState: { errors } } = useForm({
         mode: "onChange",
         defaultValues: ' '
       })
     const{successNotify,errorNotify}= useProvider()
-    const {data: currentUser,isLoading,refetch} = useUser()
-    const axiosSecure = useAxiosSecure()
-    const onSubmit = (data) =>{
-    const requesterEmail = currentUser?.email
-    const requesterName = currentUser?.name
-    const status = 'pending'
-    const newRew = {...data,requesterEmail,requesterName,status}
+    const paramID = useParams()
+   
     
-     axiosSecure.post('/donation-reqs',newRew)
+    const {data: currentUser,isLoading} = useUser()
+    
+    const axiosSecure = useAxiosSecure()
+    const {data:requestData,isLoading:dataLoading} = useQuery({
+        queryKey: ['single-requests'],
+        queryFn: async()=>{
+            const res = await axiosSecure.get(`/donation-req/${paramID.id}?email=${currentUser?.email}`)
+            return res.data
+        }
+    })
+
+    const onSubmit = (data) =>{
+     axiosSecure.patch(`/update-request?email=${currentUser?.email}`,data)
      .then((d)=>{
-        if (d.data.insertedId) {
+        console.log(d.data);
+        if (d.data.modifiedCount>0) {
             successNotify('Requeste Created')
             reset()
         }else{
@@ -35,25 +45,13 @@ const CreateReq = () => {
      })
 
   } 
-  const newUpozilas = upozilas.map(item=>(
-    {
-        value: item.name,
-        label: item.name
-    }
-  ))
-  const newDistricts = districts.map(item=>(
-    {
-        value: item.name,
-        label: item.name
-    }
-  ))
- 
-  if (isLoading) {
+  
+  if (isLoading,dataLoading) {
     return <LoadingLotie></LoadingLotie>
   }
     return (
       <div>
-        <PageTitle title={"Create Request"}></PageTitle>
+        <PageTitle title={"Update Request"}></PageTitle>
         <div>
           <form
             className="grid grid-cols-2 gap-4 bg-accent p-10 rounded-lg m-20"
@@ -61,22 +59,22 @@ const CreateReq = () => {
           >
             <input
               type="text"
+              defaultValue={requestData?.recipientName}
               className="input w-full focus:outline-none focus:border-accent"
               placeholder="Recipient Name"
               {...register("recipientName", { required: true })}
             />
             <input
               type="text"
-              name="mane"
+              defaultValue={requestData?.hospitalName}
               className="input w-full focus:outline-none focus:border-accent"
               placeholder="Hospital Name"
               {...register("hospitalName", { required: true })}
             />
 
-            {/* <Select name="upazila " placeholder={'Select District'} {...register("recipientDistrict", { required: true })} options={newDistricts} />
-            <Select placeholder={'Select Upazila'} {...register("recipientUpazila", { required: true })} options={newUpozilas} /> */}
 
             <select
+            
               {...register("recipientDistrict", { required: true })}
               required
               className="select focus:outline-none "
@@ -99,35 +97,37 @@ const CreateReq = () => {
               ))}
             </select>
 
-            
-
             <input
               type="text"
+              defaultValue={requestData?.detailAddress}
               className="input w-full focus:outline-none focus:border-accent"
               placeholder="Detail Address"
               {...register("detailAddress", { required: true })}
             />
             <input
               type="date"
+              defaultValue={requestData?.donationDate}
               className="input w-full focus:outline-none focus:border-accent"
               placeholder="Donation Date"
               {...register("donationDate", { required: true })}
             />
             <input
               type="time"
+              defaultValue={requestData?.donationTime}
               className="input w-full focus:outline-none focus:border-accent"
               placeholder="Donation Time"
               {...register("donationTime", { required: true })}
             />
             <input
               type="text"
+              defaultValue={requestData?.requestMessage}
               className="input w-full focus:outline-none focus:border-accent"
               placeholder="Request Message"
               {...register("requestMessage", { required: true })}
             />
 
             <button className="bg-secondary w-1/4 text-white border-accent btn hover:border-2 hover:border-secondary">
-              Request
+              Update
             </button>
           </form>
         </div>
@@ -135,4 +135,4 @@ const CreateReq = () => {
     );
 };
 
-export default CreateReq;
+export default UpdateReq;
