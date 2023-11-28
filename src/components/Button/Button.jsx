@@ -1,8 +1,7 @@
-import { FaUserEdit } from "react-icons/fa";
 
-const Button = () => {
+const Button = ({text,icon, onClick}) => {
     return (
-        <button className="flex bg-secondary transition-all items-center gap-3 btn">Edit Profile <FaUserEdit /> </button>
+        <button onClick={onClick} className="flex bg-secondary transition-all items-center gap-3 btn">{text} {icon} </button>
     );
 };
 

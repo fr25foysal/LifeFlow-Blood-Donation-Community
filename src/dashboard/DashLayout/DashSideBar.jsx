@@ -44,8 +44,8 @@ const DashSideBar = () => {
         </>
       );
     return (
-        <div>
-            <div>
+        <div className="">
+            <div className="">
               <Link to={"/"} className="flex justify-center">
                 <img className="w-40" src="/logo-dark.png" alt="" />
               </Link>
@@ -57,6 +57,7 @@ const DashSideBar = () => {
         </ul>
               </div>
             </div>
+           
 
           </div>
     );

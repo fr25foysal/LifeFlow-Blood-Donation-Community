@@ -1,10 +1,10 @@
+import PageTitle from "../../components/PageTitle/PageTitle";
 
 const DashBoard = () => {
     return (
         <div>
-           <h2 className="text-center">
-                    {/* Welcome, {user?.displayName} */}
-                </h2>
+          <PageTitle title={'Dashboard'}></PageTitle>
+          <h2>Welcome , {}</h2>
         </div>
     );
 };

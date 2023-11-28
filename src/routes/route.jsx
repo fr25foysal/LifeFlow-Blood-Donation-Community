@@ -35,7 +35,7 @@ const route = createBrowserRouter([
         element:<PrivateRoute><DashLayout></DashLayout></PrivateRoute> ,
         children:[
             {
-                path: 'dashboard',
+                path: '/dashboard',
                 // index: true,
                 element: <PrivateRoute><DashBoard></DashBoard></PrivateRoute>
             },
