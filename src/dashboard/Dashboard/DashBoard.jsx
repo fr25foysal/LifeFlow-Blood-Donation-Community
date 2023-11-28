@@ -2,7 +2,9 @@
 const DashBoard = () => {
     return (
         <div>
-            dashboard
+           <h2 className="text-center">
+                    {/* Welcome, {user?.displayName} */}
+                </h2>
         </div>
     );
 };

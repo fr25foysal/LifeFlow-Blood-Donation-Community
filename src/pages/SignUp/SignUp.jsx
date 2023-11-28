@@ -9,8 +9,10 @@ import districts from "../../assets/resources/districts.json"
 import divisions from "../../assets/resources/divisions.json"
 import axios from "axios";
 import toast from "react-hot-toast";
+import usePublicAxios from "../../hooks/usePublicAxios";
 const SignUp = () => {
   const [errMsg, setErrMsg] = useState('')
+  const publicAxios = usePublicAxios()
   const navigate = useNavigate()
   const imagebbApi = import.meta.env.VITE_IMGBBAPI
   const imgbburl = `https://api.imgbb.com/1/upload?key=${imagebbApi}`
@@ -44,18 +46,31 @@ const SignUp = () => {
       const password = form.password.value
       const imageFile = {image: imageInput[0]}
       const status = 'active'
+      const role = 'donor'
+
+      
       const toastId = toast.loading('Creating Account...');
       axios.post(imgbburl,imageFile,{headers:{'content-type': 'multipart/form-data'}})
        .then(d=>{
-        
       createUser(email,password)
       .then(()=>{
         updateUser(name, d.data.data.display_url)
           .then(() => {
-            successNotify("Sign Up Succesful");
-            form.reset();
-            toast.dismiss(toastId);
-            navigate("/");
+            const image = d.data.data.display_url
+            const user = {name,email,blood,division,district,status,role,image}
+            publicAxios.post('/users',user)
+            .then((d)=>{
+              console.log(d.data)
+              successNotify("Sign Up Succesful");
+              form.reset();
+              toast.dismiss(toastId);
+              navigate("/");
+            })
+            .catch((e) => {
+              toast.error('Something went wrong!');
+              toast.dismiss(toastId);
+            });
+           
           })
           .catch((e) => {
             toast.error('Keep eyes open!');
