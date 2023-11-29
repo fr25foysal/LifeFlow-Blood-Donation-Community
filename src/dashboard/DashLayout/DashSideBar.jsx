@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { MdBallot, MdDashboard } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaUsers } from "react-icons/fa";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
 import useUser from "../../hooks/useUser";
 const DashSideBar = () => {
@@ -27,10 +27,10 @@ const DashSideBar = () => {
                 ? "px-5 border-l-[4px] transition-all border-accent py-2"
                 : "py-2 transition-all"
             }
-            to={"/dashboard/profile"}
+            to={"/dashboard/all-users"}
           >
             <div className="flex items-center gap-3">
-              <FaUser className="text-2xl" /> Profile
+              <FaUsers className="text-2xl" /> All Users
             </div>
           </NavLink>
           <NavLink
@@ -39,10 +39,10 @@ const DashSideBar = () => {
                 ? "pl-5 border-l-[4px] transition-all border-accent py-2"
                 : "py-2"
             }
-            to={"/dashboard/create-donation-request"}
+            to={"/dashboard/all-blood-donation-request"}
           >
             <div className="flex items-center gap-3">
-              <BiSolidMessageSquareAdd  className="text-2xl" /> Create Request</div>
+              <MdBallot  className="text-2xl" /> Donation Requests</div>
           </NavLink>
           <NavLink
             className={({ isActive }) =>
@@ -50,10 +50,10 @@ const DashSideBar = () => {
                 ? "pl-5 border-l-[4px] transition-all border-accent py-2"
                 : "py-2"
             }
-            to={"/dashboard/my-donation-requests"}
+            to={"/dashboard/content-management"}
           >
             <div className="flex items-center gap-3">
-              <MdBallot className="text-2xl" />My Requests</div>
+              <MdBallot className="text-2xl" />All Blogs</div>
           </NavLink>
         </>
       );

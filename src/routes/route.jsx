@@ -11,6 +11,11 @@ import CreateReq from "../dashboard/CreateReq/CreateReq";
 import UpdateReq from "../dashboard/CreateReq/UpdateReq/UpdateReq";
 import DetailsReq from "../dashboard/DetailsReq/DetailsReq";
 import MyRequests from "../dashboard/Dashboard/MyRequests/MyRequests";
+import ViewAllUsers from "../dashboard/adminPages/ViewAllUser/ViewAllUsers";
+import DonationsRequests from "../dashboard/adminPages/DonationRequests/DonationsRequests";
+import AddBlog from "../dashboard/adminPages/ContentManagement/AddBlog/AddBlog";
+import AllBlogs from "../dashboard/adminPages/ContentManagement/AllBlogs/AllBlogs";
+import ContentManagement from "../dashboard/adminPages/ContentManagement/ContentManagement";
 
 const route = createBrowserRouter([
     {
@@ -66,6 +71,32 @@ const route = createBrowserRouter([
             {
                 path: 'my-donation-requests',
                 element: <PrivateRoute><MyRequests></MyRequests></PrivateRoute>
+            },
+
+            // Admin Routes
+
+            {
+                path:'all-users',
+                element: <PrivateRoute><ViewAllUsers></ViewAllUsers></PrivateRoute>
+            },
+            {
+                path: 'all-blood-donation-request',
+                element: <PrivateRoute><DonationsRequests></DonationsRequests></PrivateRoute>
+            },
+            {
+                path: 'content-management',
+                element: <PrivateRoute><ContentManagement></ContentManagement></PrivateRoute>,
+                children:[
+                    {
+                        index:true,
+                        // path: 'content-management',
+                        element: <PrivateRoute><AllBlogs></AllBlogs></PrivateRoute>
+                    },
+                    {
+                        path: 'add-blog',
+                        element: <PrivateRoute><AddBlog></AddBlog></PrivateRoute>
+                    }
+                ]
             }
         ]
     }
