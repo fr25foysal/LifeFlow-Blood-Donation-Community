@@ -4,7 +4,7 @@ import useUser from "../../hooks/useUser";
 import DonorThreeRequest from "./DonorThreeRequest/DonorThreeRequest";
 
 const DashBoard = () => {
-  const {data,isLoading,refetch} = useUser()
+  const {data,isLoading} = useUser()
   if (isLoading) {
     return  <LoadingLotie></LoadingLotie>
 }
