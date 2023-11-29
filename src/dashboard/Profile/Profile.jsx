@@ -12,6 +12,7 @@ import useUser from "../../hooks/useUser";
 
 const Profile = () => {
     const axiosSecure = useAxiosSecure();
+    const {data:currentUser}= useUser()
   const {successNotify,user} = useProvider()
     const imagebbApi = import.meta.env.VITE_IMGBBAPI
   const imgbburl = `https://api.imgbb.com/1/upload?key=${imagebbApi}`
@@ -30,7 +31,7 @@ const Profile = () => {
       const toastId = toast.loading('Please Wait...');
       axios.post(imgbburl,imageFile,{headers:{'content-type': 'multipart/form-data'}})
        .then(d=>{
-        const image = d.data.data.display_url
+        const image = d.data.data.display_url || currentUser.image
         const updatedUser = {name,blood,division,district,image}
         console.log(updatedUser);
         axiosSecure.patch(`/user?email=${user?.email}`,updatedUser)
@@ -42,7 +43,6 @@ const Profile = () => {
           toast.dismiss(toastId); 
           refetch()
             }
-
           toast.error('Something went wrong!');
           toast.dismiss(toastId);
         })
@@ -116,6 +116,7 @@ const Profile = () => {
                             className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3  text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-700 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                             placeholder=" "
                             name="name"
+                            defaultValue={currentUser?.name}
                             required
                             type="text"
                           />
@@ -181,7 +182,6 @@ const Profile = () => {
                       <input
                         type="file"
                         name="image"
-                        required
                         className="file-input file-input-bordered file-input-error"
                       />
                     </div>

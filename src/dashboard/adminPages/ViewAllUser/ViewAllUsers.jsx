@@ -1,6 +1,6 @@
 import useUser from "../../../hooks/useUser";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { MdAdminPanelSettings, MdVolunteerActivism } from "react-icons/md";
+import { MdAdminPanelSettings, MdNotificationsActive, MdVolunteerActivism } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import LoadingLotie from "../../../components/Lotties/LoadingLotie";
 import { ImBlocked } from "react-icons/im";
@@ -17,7 +17,7 @@ const ViewAllUsers = () => {
     const {data:{result,dataCount},isLoading,refetch} = useQuery({
         queryKey: ['dashboard-requests',page,filter],
         queryFn: async()=>{
-            const res = await axiosSecure.get(`/users?email=${user?.email}&page=${page}&filter=${filter}`)
+            const res = await axiosSecure.get(`/users?admin=${user.email}&page=${page}&filter=${filter}`)
             return res.data
             
         },
@@ -41,34 +41,123 @@ const ViewAllUsers = () => {
       setFilter(e.target.value);
 
     }
-    const handleDelete=(id)=>{
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d90429",
-            cancelButtonColor: "#2b2d42",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-                axiosSecure.delete(`/delete-request/${id}`)
-        .then((d)=>{
-            console.log(d.data)
-            if (d.data.deletedCount>0) {
-                refetch()
-                 Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
-            }
-           
-        })   
-            }
-          });
-        
+
+    const handleChangeActive=(email)=>{
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d90429",
+        cancelButtonColor: "#2b2d42",
+        confirmButtonText: "Yes, Do it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.patch(`/user?email=${email}`,{status: 'blocked'})
+          .then((d)=>{
+              console.log(d.data)
+              refetch()
+              Swal.fire({
+             title: "Blocked!",
+             text: "User has been blocked.",
+             icon: "success"
+           });
+    })   
+        }
+      });
     }
+    const handleChangeBlocked=(email)=>{
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d90429",
+        cancelButtonColor: "#2b2d42",
+        confirmButtonText: "Yes, Do it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.patch(`/user?email=${email}`,{status: 'active'})
+          .then((d)=>{
+              console.log(d.data)
+              refetch()
+              Swal.fire({
+             title: "Activated!",
+             text: "User has been Activated.",
+             icon: "success"
+           });
+    })   
+        }
+      });
+    }
+    const handleMakeAdmin=(email)=>{
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d90429",
+        cancelButtonColor: "#2b2d42",
+        confirmButtonText: "Yes, Do it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.patch(`/user?email=${email}`,{role: 'admin'})
+          .then((d)=>{
+              console.log(d.data)
+              refetch()
+              Swal.fire({
+             title: "Done!",
+             text: "This user is Admin now.",
+             icon: "success"
+           });
+    })   
+        }
+      });
+    }
+    const handleMakeVlolunteer=(email)=>{
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d90429",
+        cancelButtonColor: "#2b2d42",
+        confirmButtonText: "Yes, Do it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.patch(`/user?email=${email}`,{role: 'volunteer'})
+          .then((d)=>{
+              console.log(d.data)
+              refetch()
+              Swal.fire({
+             title: "Done!",
+             text: "This user is Volunteer now.",
+             icon: "success"
+           });
+    })   
+        }
+      });
+    }
+    const handleMakeDonor=(email)=>{
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d90429",
+        cancelButtonColor: "#2b2d42",
+        confirmButtonText: "Yes, Do it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.patch(`/user?email=${email}`,{role: 'doner'})
+          .then((d)=>{
+              console.log(d.data)
+              refetch()
+              Swal.fire({
+             title: "Done!",
+             text: "This user is Donor now.",
+             icon: "success"
+           });
+    })   
+        }
+      });
+    }
+
     if (isLoading) {
        return <LoadingLotie/>
     }
@@ -83,10 +172,8 @@ const ViewAllUsers = () => {
               className="select focus:outline-none border-none bg-secondary text-white"
             >
               <option value="">Status</option>
-              <option value="pending">Pending</option>
-              <option value="“inprogress”">In Progress</option>
-              <option value="“done”">Done</option>
-              <option value="canceled">Canceled</option>
+              <option value="active">Active</option>
+              <option value="blocked">Blocked</option>
             </select>
           </div>
 
@@ -135,15 +222,23 @@ const ViewAllUsers = () => {
                     </div>
                   </td>
 
-                  <td>
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="btn btn-secondary text-white btn-xs"
-                    >
-                        {user?.status == 'active' ? 'Block' : "Active" }
-                      <ImBlocked />
-                    </button>
-                   
+                  <td>                        
+                    {item?.status === 'active' ?
+                    <button disabled={item.email ==user.email}
+                    onClick={() => handleChangeActive(item.email)}
+                    className="btn btn-secondary text-white btn-xs"
+                  > Block
+                    <ImBlocked />
+                  </button> 
+                  :
+                   <button disabled={item.email ==user.email}
+                    onClick={() => handleChangeBlocked(item.email)}
+                    className="btn btn-secondary text-white btn-xs"
+                  > Active
+                    <MdNotificationsActive />
+                  </button>
+                     }
+
                   </td>
 
                   <td className="capitalize font-semibold">{item.role}</td>
@@ -151,15 +246,15 @@ const ViewAllUsers = () => {
                   <th className="flex gap-2">
                     {
                         item?.role === 'admin' ?
-                        <div className="flex flex-col gap-y-2"><button
-                      onClick={() => handleDelete(item._id)}
+                        <div className="flex flex-col gap-y-2"><button disabled={item.email ==user.email}
+                      onClick={() => handleMakeVlolunteer(item.email)}
                       className="btn btn-secondary text-white btn-xs"
                     >
                         Make Volunteer
                       <FaHandsHelping />
                     </button>
-                    <button
-                      onClick={() => handleDelete(item._id)}
+                    <button disabled={item.email ==user.email}
+                      onClick={() => handleMakeDonor(item.email)}
                       className="btn btn-secondary text-white btn-xs"
                     >
                         Make Donor
@@ -168,15 +263,15 @@ const ViewAllUsers = () => {
                     }
                     {
                         item?.role === 'donor' ?
-                        <div className="flex flex-col gap-y-2"><button
-                      onClick={() => handleDelete(item._id)}
+                        <div className="flex flex-col gap-y-2"><button disabled={item.email ==user.email}
+                      onClick={() => handleMakeAdmin(item.email)}
                       className="btn btn-secondary text-white btn-xs"
                     >
                         Make Admin
                       <MdAdminPanelSettings  />
                     </button>
-                    <button
-                      onClick={() => handleDelete(item._id)}
+                    <button disabled={item.email ==user.email}
+                      onClick={() => handleMakeVlolunteer(item.email)}
                       className="btn btn-secondary text-white btn-xs"
                     >
                         Make Volunteer
@@ -185,15 +280,15 @@ const ViewAllUsers = () => {
                     }
                     {
                         item?.role === 'volunteer' ?
-                        <div className="flex flex-col gap-y-2"><button
-                      onClick={() => handleDelete(item._id)}
+                        <div className="flex flex-col gap-y-2"><button disabled={item.email ==user.email}
+                      onClick={() =>handleMakeAdmin(item.email)}
                       className="btn btn-secondary text-white btn-xs"
                     >
                         Make Admin
                       <MdAdminPanelSettings  />
                     </button>
-                    <button
-                      onClick={() => handleDelete(item._id)}
+                    <button disabled={item.email ==user.email}
+                      onClick={() => handleMakeDonor(item.email)}
                       className="btn btn-secondary text-white btn-xs"
                     >
                         Make Donor

@@ -24,9 +24,19 @@ const SignUp = () => {
 
     const handleGoogleLogin=()=>{
       googleLogin()
-      .then(()=>{
-        successNotify("Sign Up Succesful")
-          navigate('/')
+      .then((d)=>{
+        const name = d.user.displayName
+        const email = d.user.email
+        const status = 'active'
+        const role = 'donor'
+        const image = d.user.photoURL
+        const user = {name,email,status,role,image}
+        publicAxios.patch(`/user?email=${email}`,user)
+            .then((d)=>{
+                successNotify("Sign Up Succesful")
+                    navigate("/");
+            })
+        
       })
       .catch(e=>{
         setErrMsg(e.message)

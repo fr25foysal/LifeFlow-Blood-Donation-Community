@@ -5,9 +5,10 @@ import AuthLotie from "../../components/Lotties/AuthLotie";
 import { useState } from "react";
 import useProvider from "../../hooks/useProvider";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import usePublicAxios from "../../hooks/usePublicAxios";
 
 const SignIn = () => {
-   
+  const publicAxios = usePublicAxios()
   const [errMsg, setErrMsg] = useState('')
   const navigate = useNavigate()
     const {userLogin,successNotify,googleLogin} = useProvider()
@@ -18,11 +19,20 @@ const SignIn = () => {
 
     const handleGoogleLogin=()=>{
       googleLogin()
-      .then((e)=>{
+      .then((d)=>{
         // axios.post('/jwt',{email: e.user.email}, {withCredentials: true})
         // .then(res=> console.log(res.data))
-        successNotify("Sign Up Succesful")
-          navigate('/')
+        const name = d.user.displayName
+        const email = d.user.email
+        const status = 'active'
+        const role = 'donor'
+        const image = d.user.photoURL
+        const user = {name,email,status,role,image}
+        publicAxios.patch(`/user?email=${email}`,user)
+        .then((d)=>{
+            successNotify("Sign Up Succesful")
+            navigate("/");
+        })
       })
       .catch(e=>{
         setErrMsg(e.message)
