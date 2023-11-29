@@ -2,7 +2,9 @@ import { Link, NavLink } from "react-router-dom";
 import { MdBallot, MdDashboard } from "react-icons/md";
 import { FaUser, FaUsers } from "react-icons/fa";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
+import { RiPagesFill } from "react-icons/ri";
 import useUser from "../../hooks/useUser";
+
 const DashSideBar = () => {
   const {data:user} = useUser()
 
@@ -53,7 +55,7 @@ const DashSideBar = () => {
             to={"/dashboard/content-management"}
           >
             <div className="flex items-center gap-3">
-              <MdBallot className="text-2xl" />All Blogs</div>
+              <RiPagesFill className="text-2xl" />All Blogs</div>
           </NavLink>
         </>
       );
