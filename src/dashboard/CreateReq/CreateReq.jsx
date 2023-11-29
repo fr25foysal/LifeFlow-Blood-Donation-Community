@@ -13,7 +13,7 @@ const CreateReq = () => {
         defaultValues: ' '
       })
     const{successNotify,errorNotify}= useProvider()
-    const {data: currentUser,isLoading,refetch} = useUser()
+    const {data: currentUser,isLoading} = useUser()
     const axiosSecure = useAxiosSecure()
     const onSubmit = (data) =>{
     const requesterEmail = currentUser?.email
@@ -35,18 +35,18 @@ const CreateReq = () => {
      })
 
   } 
-  const newUpozilas = upozilas.map(item=>(
-    {
-        value: item.name,
-        label: item.name
-    }
-  ))
-  const newDistricts = districts.map(item=>(
-    {
-        value: item.name,
-        label: item.name
-    }
-  ))
+//   const newUpozilas = upozilas.map(item=>(
+//     {
+//         value: item.name,
+//         label: item.name
+//     }
+//   ))
+//   const newDistricts = districts.map(item=>(
+//     {
+//         value: item.name,
+//         label: item.name
+//     }
+//   ))
  
   if (isLoading) {
     return <LoadingLotie></LoadingLotie>
@@ -126,7 +126,7 @@ const CreateReq = () => {
               {...register("requestMessage", { required: true })}
             />
 
-            <button className="bg-secondary w-1/4 text-white border-accent btn hover:border-2 hover:border-secondary">
+            <button  disabled={!currentUser.status=='active'} className="bg-secondary disabled:text-white disabled:bg-error w-1/4 text-white border-accent btn hover:border-2 hover:border-secondary">
               Request
             </button>
           </form>

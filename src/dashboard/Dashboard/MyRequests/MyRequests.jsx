@@ -7,19 +7,41 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingLotie from "../../../components/Lotties/LoadingLotie";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import Button from "../../../components/Button/Button";
+import PageTitle from "../../../components/PageTitle/PageTitle";
+import { useState } from "react";
 
-const DonorThreeRequest = () => {
+const MyRequest = () => {
     const {data:user} = useUser()
+    const [page,setPage] = useState(0)
+   const [filter,setFilter] = useState('')
     const axiosSecure = useAxiosSecure()
-    const {data=[],isLoading,refetch} = useQuery({
-        queryKey: ['dashboard-requests'],
+    const {data:{result,dataCount},isLoading,refetch} = useQuery({
+        queryKey: ['dashboard-requests',page,filter],
         queryFn: async()=>{
-            const res = await axiosSecure.get(`/dashboard-donation-reqs?email=${user?.email}`)
+            const res = await axiosSecure.get(`/donation-reqs?email=${user?.email}&page=${page}&filter=${filter}`)
             return res.data
-        }
+            
+        },
+        initialData: {result: [],dataCount: 0}
     })
-    console.log(data);
+    const postPerPage = 5
+    const totalData = Math.ceil(dataCount/postPerPage)
+    const pageNumbersArr = [...new Array(totalData).fill(0)]
+    const handlePrev = ()=>{
+      if (!page==0) {
+        setPage(page-1)
+      }
+    }
+    const handleNext = ()=>{
+     if (!page== pageNumbersArr.length-1) {
+      setPage(page+1)
+     }
+        
+    }
+    const handleFilter= (e)=>{
+      setFilter(e.target.value);
+
+    }
     const handleDelete=(id)=>{
         Swal.fire({
             title: "Are you sure?",
@@ -51,12 +73,23 @@ const DonorThreeRequest = () => {
     if (isLoading) {
        return <LoadingLotie/>
     }
-    if (data.length<1) {
-        return
-    }
     return (
+      <>
+      <PageTitle title={'Donation Requests'}></PageTitle>
       <div className="overflow-x-auto bg-accent rounded-lg p-10 text-white m-10">
+        <div className="flex items-center gap-5">
+          <h2 className="text-xl font-medium">Filter: </h2>
+        <select onChange={handleFilter} className="select focus:outline-none border-none bg-secondary text-white">
+          <option value="">Status</option>
+          <option value="pending">Pending</option>
+          <option value="“inprogress”">In Progress</option>
+          <option value="“done”">Done</option>
+          <option value="canceled">Canceled</option>
+        </select>
+        </div>
+        
         <table className="table mb-5">
+          
           {/* head */}
           <thead>
             <tr>
@@ -70,7 +103,7 @@ const DonorThreeRequest = () => {
           </thead>
           <tbody>
 
-            {data?.map(item=>
+            {result?.map(item=>
                 <tr key={item._id}>
               
                 <td>
@@ -105,10 +138,18 @@ const DonorThreeRequest = () => {
         
           
         </table>
-        <Link to={'/dashboard/my-donation-requests'}><Button text={'View All'}></Button></Link>
+        <div className="flex gap-5 justify-center">
+          <button onClick={handlePrev} className="btn btn-sm">Prev</button>
+          <div>
+              {
+                pageNumbersArr.map((pageNumber,index)=><button onClick={()=>setPage(index)} className={`btn btn-sm rounded-full mx-2 ${page==index? 'btn-secondary': ""} `} key={index}>{index+1}</button>)
+              }
+          </div>
+          <button onClick={handleNext} className="btn btn-sm">Next</button>
+        </div>
          
-      </div>
+      </div></>
     );
 };
 
-export default DonorThreeRequest;
+export default MyRequest;

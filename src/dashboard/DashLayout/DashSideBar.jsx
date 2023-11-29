@@ -1,10 +1,14 @@
 import { Link, NavLink } from "react-router-dom";
-import { MdDashboard } from "react-icons/md";
+import { MdBallot, MdDashboard } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
+import useUser from "../../hooks/useUser";
 const DashSideBar = () => {
-    const menus = (
+  const {data:user} = useUser()
+
+    const adminMenus = (
         <>
+        <h2>Admin</h2>
           <NavLink
             className={({ isActive }) =>
               isActive
@@ -40,8 +44,123 @@ const DashSideBar = () => {
             <div className="flex items-center gap-3">
               <BiSolidMessageSquareAdd  className="text-2xl" /> Create Request</div>
           </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pl-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard/my-donation-requests"}
+          >
+            <div className="flex items-center gap-3">
+              <MdBallot className="text-2xl" />My Requests</div>
+          </NavLink>
         </>
       );
+
+    const donorMenus = (
+        <>
+        <h2>donor</h2>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "px-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard"}
+          >
+            <div className="flex items-center gap-3">
+              <MdDashboard className="text-2xl" /> Dashboard
+            </div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "px-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2 transition-all"
+            }
+            to={"/dashboard/profile"}
+          >
+            <div className="flex items-center gap-3">
+              <FaUser className="text-2xl" /> Profile
+            </div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pl-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard/create-donation-request"}
+          >
+            <div className="flex items-center gap-3">
+              <BiSolidMessageSquareAdd  className="text-2xl" /> Create Request</div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pl-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard/my-donation-requests"}
+          >
+            <div className="flex items-center gap-3">
+              <MdBallot className="text-2xl" />My Requests</div>
+          </NavLink>
+        </>
+      );
+    const volentMenus = (
+        <>
+        <h2>Voluntere</h2>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "px-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard"}
+          >
+            <div className="flex items-center gap-3">
+              <MdDashboard className="text-2xl" /> Dashboard
+            </div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "px-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2 transition-all"
+            }
+            to={"/dashboard/profile"}
+          >
+            <div className="flex items-center gap-3">
+              <FaUser className="text-2xl" /> Profile
+            </div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pl-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard/create-donation-request"}
+          >
+            <div className="flex items-center gap-3">
+              <BiSolidMessageSquareAdd  className="text-2xl" /> Create Request</div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pl-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard/my-donation-requests"}
+          >
+            <div className="flex items-center gap-3">
+              <MdBallot className="text-2xl" />My Requests</div>
+          </NavLink>
+        </>
+      );
+      
     return (
         <div className="">
             <div className="">
@@ -52,7 +171,10 @@ const DashSideBar = () => {
               <div>
               <ul className="menu gap-y-3 p-4 w-[70%] h-full ">
         
-          {menus}
+          {/* {user?.role === 'admin'donorMenus} */}
+          {
+          (user?.role === "admin") ? adminMenus : (user?.role === "donor") ? donorMenus : volentMenus
+          }
         </ul>
               </div>
             </div>

@@ -10,6 +10,7 @@ import Home from "../pages/Home/Home";
 import CreateReq from "../dashboard/CreateReq/CreateReq";
 import UpdateReq from "../dashboard/CreateReq/UpdateReq/UpdateReq";
 import DetailsReq from "../dashboard/DetailsReq/DetailsReq";
+import MyRequests from "../dashboard/Dashboard/MyRequests/MyRequests";
 
 const route = createBrowserRouter([
     {
@@ -60,6 +61,11 @@ const route = createBrowserRouter([
             {
                 path: 'details-request/:id',
                 element: <PrivateRoute><DetailsReq></DetailsReq></PrivateRoute>
+            }
+            ,
+            {
+                path: 'my-donation-requests',
+                element: <PrivateRoute><MyRequests></MyRequests></PrivateRoute>
             }
         ]
     }

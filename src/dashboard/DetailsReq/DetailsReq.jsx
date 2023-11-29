@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import LoadingLotie from "../../components/Lotties/LoadingLotie";
 import useUser from "../../hooks/useUser";
 
 const DetailsReq = () => {
