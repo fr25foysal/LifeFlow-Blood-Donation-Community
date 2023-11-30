@@ -1,11 +1,8 @@
 import useUser from "../../../hooks/useUser";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { BiSolidEdit } from "react-icons/bi";
-import { FaRegEye } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { MdManageHistory } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import LoadingLotie from "../../../components/Lotties/LoadingLotie";
-import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import PageTitle from "../../../components/PageTitle/PageTitle";
 import { useState } from "react";
@@ -42,25 +39,24 @@ const MyRequest = () => {
       setFilter(e.target.value);
 
     }
-    const handleDelete=(id)=>{
+    const handleInProgress=(id)=>{
         Swal.fire({
             title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            text: "You are going to change the status to inprogress!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d90429",
             cancelButtonColor: "#2b2d42",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, do it!"
           }).then((result) => {
             if (result.isConfirmed) {
-                axiosSecure.delete(`/delete-request/${id}`)
+                axiosSecure.patch(`/update-request/?id=${id}`,{status: 'in progress'})
         .then((d)=>{
-            console.log(d.data)
-            if (d.data.deletedCount>0) {
+            if (d.data.modifiedCount>0) {
                 refetch()
                  Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
+                title: "Updated!",
+                text: "Request is in Progrss Now.",
                 icon: "success"
               });
             }
@@ -95,6 +91,7 @@ const MyRequest = () => {
             <tr>
               <th>Recipient Name</th>
               <th>Recipient Location</th>
+              <th>Requester Details</th>
               <th>Date</th>
               <th>Time</th>
               <th>Status</th>
@@ -122,13 +119,20 @@ const MyRequest = () => {
                     {item.detailAddress}
                   </span>
                 </td>
+                <td>
+                  <div className="flex items-center gap-3">
+                   
+                    <div>
+                      <div className="font-bold">{item.requesterName}</div>
+                      <div className="text-sm opacity-70"> {item.requesterEmail}</div>
+                    </div>
+                  </div>
+                </td>
                 <td>{item.donationDate}</td>
                 <td>{item.donationTime}</td>
                 <td className="capitalize">{item.status}</td>
                 <th className="flex gap-2">
-                  <Link to={`/dashboard/edit-request/${item._id}`} className="btn text-lg btn-secondary text-white btn-xs"><BiSolidEdit/></Link>
-                  <Link to={`/dashboard/details-request/${item._id}`} className="btn text-lg btn-secondary text-white btn-xs"><FaRegEye /></Link>
-                  <button onClick={()=>handleDelete(item._id)} className="btn text-lg btn-secondary text-white btn-xs"><MdDelete /></button>
+                  <button onClick={()=>handleInProgress(item._id)} className="btn mt-2 btn-secondary text-white btn-xs">In Progress<MdManageHistory /></button>
                   
                 </th>
               </tr>

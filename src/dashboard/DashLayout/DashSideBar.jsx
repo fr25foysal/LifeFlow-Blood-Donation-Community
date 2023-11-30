@@ -29,6 +29,18 @@ const DashSideBar = () => {
                 ? "px-5 border-l-[4px] transition-all border-accent py-2"
                 : "py-2 transition-all"
             }
+            to={"/dashboard/profile"}
+          >
+            <div className="flex items-center gap-3">
+              <FaUser className="text-2xl" /> Profile
+            </div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "px-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2 transition-all"
+            }
             to={"/dashboard/all-users"}
           >
             <div className="flex items-center gap-3">
@@ -159,6 +171,28 @@ const DashSideBar = () => {
           >
             <div className="flex items-center gap-3">
               <MdBallot className="text-2xl" />My Requests</div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pl-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard/all-blood-donation-request"}
+          >
+            <div className="flex items-center gap-3">
+              <MdBallot  className="text-2xl" />All Donation Requests</div>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "pl-5 border-l-[4px] transition-all border-accent py-2"
+                : "py-2"
+            }
+            to={"/dashboard/content-management"}
+          >
+            <div className="flex items-center gap-3">
+              <RiPagesFill className="text-2xl" />All Blogs</div>
           </NavLink>
         </>
       );

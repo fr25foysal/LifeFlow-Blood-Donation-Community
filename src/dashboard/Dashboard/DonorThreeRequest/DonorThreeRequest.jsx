@@ -19,7 +19,6 @@ const DonorThreeRequest = () => {
             return res.data
         }
     })
-    console.log(data);
     const handleDelete=(id)=>{
         Swal.fire({
             title: "Are you sure?",

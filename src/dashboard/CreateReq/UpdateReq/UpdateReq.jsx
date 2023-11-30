@@ -21,7 +21,7 @@ const UpdateReq = () => {
     const {data: currentUser,isLoading} = useUser()
     
     const axiosSecure = useAxiosSecure()
-    const {data:requestData,isLoading:dataLoading} = useQuery({
+    const {data:requestData,isLoading:dataLoading,refetch} = useQuery({
         queryKey: ['single-requests'],
         queryFn: async()=>{
             const res = await axiosSecure.get(`/donation-req/${paramID.id}?email=${currentUser?.email}`)
@@ -30,11 +30,11 @@ const UpdateReq = () => {
     })
 
     const onSubmit = (data) =>{
-     axiosSecure.patch(`/update-request?email=${currentUser?.email}`,data)
+     axiosSecure.patch(`/update-request?id=${paramID.id}`,data)
      .then((d)=>{
-        console.log(d.data);
         if (d.data.modifiedCount>0) {
             successNotify('Requeste Created')
+            refetch()
             reset()
         }else{
             errorNotify('Something went wrong!')

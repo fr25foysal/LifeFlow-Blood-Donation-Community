@@ -16,6 +16,7 @@ import DonationsRequests from "../dashboard/adminPages/DonationRequests/Donation
 import AddBlog from "../dashboard/adminPages/ContentManagement/AddBlog/AddBlog";
 import AllBlogs from "../dashboard/adminPages/ContentManagement/AllBlogs/AllBlogs";
 import ContentManagement from "../dashboard/adminPages/ContentManagement/ContentManagement";
+import EditBlog from "../dashboard/adminPages/ContentManagement/EditBlog/EditBlog";
 
 const route = createBrowserRouter([
     {
@@ -95,6 +96,11 @@ const route = createBrowserRouter([
                     {
                         path: 'add-blog',
                         element: <PrivateRoute><AddBlog></AddBlog></PrivateRoute>
+                    }
+                    ,
+                    {
+                        path: 'edit-blog/:id',
+                        element: <PrivateRoute><EditBlog></EditBlog></PrivateRoute>
                     }
                 ]
             }

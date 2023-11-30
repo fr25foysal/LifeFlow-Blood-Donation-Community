@@ -1,12 +1,16 @@
 import PageTitle from "../../../../components/PageTitle/PageTitle";
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import axios from "axios";
 import useUser from "../../../../hooks/useUser";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useProvider from "../../../../hooks/useProvider";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import usePublicAxios from "../../../../hooks/usePublicAxios";
 
-const AddBlog = ({placeholder}) => {
+const EditBlog = ({placeholder}) => {
+    const {id} = useParams()
     const editor = useRef(null);
     const {successNotify} = useProvider()
     const {data:user} = useUser()
@@ -15,7 +19,19 @@ const AddBlog = ({placeholder}) => {
     const imgbburl = `https://api.imgbb.com/1/upload?key=${imagebbApi}`
     const [imageUrl,setImageUrl] = useState('')
     const axiosSecure = useAxiosSecure()
+    const axiosPublic = usePublicAxios()
 
+    const {data} = useQuery({
+        queryKey:['blog'],
+        queryFn: async()=>{
+        const res = await axiosPublic.get(`/blog?id=${id}`)
+        return res.data
+        }
+    })
+    useEffect(()=>{
+    setContent(data?.content)
+    setImageUrl(data?.imageUrl)
+    },[data])
 	// const config = useMemo({
     //     readonly: false,placeholder: placeholder || 'Start typings...'
     // },
@@ -37,16 +53,12 @@ const AddBlog = ({placeholder}) => {
         e.preventDefault()
         const form = e.target 
         const title = form.title.value
-        const status = 'draft'
-        const author = {name: user.name,email: user.email,role:user.role,image: user.image}
-        const post = {title,content,imageUrl,status,author}
+        const post = {title,content,imageUrl}
 
-        axiosSecure.post('/post',post)
+        axiosSecure.patch(`/posts?id=${id}`,post)
         .then((d)=>{ 
-            if (d.data.insertedId) {
-                form.reset()
-                setContent('')
-                setImageUrl('')
+            console.log(d.data);
+            if (d.data.modifiedCount>0) {
                 successNotify('Post have been saved to draft')
             }
         })
@@ -64,6 +76,7 @@ const AddBlog = ({placeholder}) => {
             <input
               type="text"
               name="title"
+              defaultValue={data?.title}
               required
               placeholder="title here"
               className="input w-full focus:outline-none border-none mb-5 mt-2"
@@ -80,14 +93,14 @@ const AddBlog = ({placeholder}) => {
               }}
             />
           </div>
-          <div className="bg-error p-5 flex flex-col justify-between h-80 rounded-lg w-1/5">
+          <div className="bg-error p-5 flex flex-col justify-between h-fit rounded-lg w-1/5">
             <div>
                 <h2 className="text-white text-2xl font-semibold">Featured Image:</h2>
-                <input type="file" required onChange={handleUploadFeatured} name="featuredImage" className="file-input file-input-bordered outline-none file-input-secondary w-full my-4" />
-               
+                <input type="file" onChange={handleUploadFeatured} name="featuredImage" className="file-input file-input-bordered outline-none file-input-secondary w-full my-4" />
+               <img src={imageUrl} alt="" />
             </div>
-            <div className="flex items-end justify-center">
-                <button disabled={imageUrl===''} type="submit" className="btn btn-neutral ">Publish</button>
+            <div className="flex mt-5 items-end justify-center">
+                <button disabled={imageUrl===''} type="submit" className="btn btn-neutral ">Update</button>
             </div>
             
           </div>
@@ -96,4 +109,4 @@ const AddBlog = ({placeholder}) => {
     );
 };
 
-export default AddBlog;
+export default EditBlog;
