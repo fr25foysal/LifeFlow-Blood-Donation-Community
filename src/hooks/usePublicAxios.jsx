@@ -2,7 +2,7 @@ import axios from "axios";
 
 const usePublicAxios = () => {
     const instance = axios.create({
-        baseURL: 'http://localhost:5000',
+        baseURL: 'https://lifeflow-server-side.vercel.app',
       });
     return instance
 };

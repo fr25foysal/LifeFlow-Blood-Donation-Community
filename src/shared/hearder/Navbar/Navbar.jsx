@@ -5,7 +5,6 @@ import userImage from '../../../assets/user.jpg'
 import BoxContainer from "../../../components/BoxContainer/BoxContainer";
 const Navbar = () => {
   const {user,logOut,successNotify} = useProvider()
-console.log(user);
 
 const handleLogOut=()=>{
   logOut()
@@ -69,7 +68,7 @@ const handleLogOut=()=>{
             ? "px-5 border-b-[4px] transition-all border-accent py-2"
             : ""
         }
-        to={"/"}
+        to={"/all-blogs"}
       >
         Blogs
       </NavLink>

@@ -4,9 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import BoxContainer from "../../components/BoxContainer/BoxContainer";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { MdVolunteerActivism } from "react-icons/md";
+import Swal from "sweetalert2";
+import useUser from "../../hooks/useUser";
 
 const SingleDonationPage = () => {
     const {id} = useParams()
+    const {data:user} = useUser()
 
     const axiosSecure = useAxiosSecure()
     const {data:requestData,isLoading:dataLoading,refetch} = useQuery({
@@ -14,9 +17,45 @@ const SingleDonationPage = () => {
         queryFn: async()=>{
             const res = await axiosSecure.get(`/single-donation-req/${id}`)
             return res.data
-        }
+            
+        },
+        initialData: {requestData:[]}
     })
-    const {_id,recipientDistrict,detailAddress,requestMessage,requesterName
+    const handleDonate= ()=>{
+        Swal.fire({
+            title: "Are you sure?",
+            text: "DonBe a Lifesaver: Donate Blood, Save Lives!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d90429",
+            cancelButtonColor: "#2b2d42",
+            confirmButtonText: "Donate!"
+          }).then((result) => {
+            const updatedData = {
+                status: 'in progress',
+                donorName : user.name,
+                donorEmail : user.email
+
+            }
+            if (result.isConfirmed) {
+                axiosSecure.patch(`/update-request/?id=${id}`,updatedData)
+        .then((d)=>{
+            if (d.data.modifiedCount>0) {
+                refetch()
+                 Swal.fire({
+                title: "Success!",
+                text: "Donation is in Progress Now.",
+                icon: "success"
+              });
+            }
+           
+        })   
+            }
+          });
+        
+    }
+
+    const {recipientDistrict,detailAddress,requestMessage,requesterName
         ,recipientName,donationTime,donationDate,hospitalName,recipientUpazila} = requestData
 
     return (
@@ -51,7 +90,7 @@ const SingleDonationPage = () => {
               </p>
             </div>
           </div>
-          <button className="btn w-2/12 btn-secondary text-white">Donate <MdVolunteerActivism></MdVolunteerActivism> </button>
+          <button onClick={handleDonate} className="btn w-2/12 btn-secondary text-white">Donate <MdVolunteerActivism></MdVolunteerActivism> </button>
         </BoxContainer>
       </div>
     );
