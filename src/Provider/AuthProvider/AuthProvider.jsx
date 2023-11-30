@@ -2,7 +2,7 @@ import { GoogleAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged,
 import { createContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { auth } from "../../configs/firebase.config";
-
+import usePublicAxios from '../../hooks/usePublicAxios'
 export const authContext= createContext()
 const AuthProvider = ({children}) => {
     
@@ -41,15 +41,28 @@ const AuthProvider = ({children}) => {
 
     // Log out user 
     const logOut =()=>{
+        localStorage.removeItem('access-token')
         return signOut(auth)
     }
 
     // keep the user alive on website😂
-
+const publicAxios = usePublicAxios()
     useEffect(()=>{
         onAuthStateChanged(auth, currentuser=>{
             setUser(currentuser)
             // const email = currentuser?.email || user?.email
+            console.log(currentuser);
+            if (currentuser) {
+                console.log('order');
+                publicAxios.post('/jwt',{email: currentuser.email})
+                .then(d=>{
+                    console.log(d.data);
+                    localStorage.setItem('access-token',d.data.token)
+                })
+            }else{
+                // 
+            }
+            
             setLoading(false)
         })
     },[])
