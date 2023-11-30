@@ -2,7 +2,7 @@ import useUser from "../../../hooks/useUser";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { BiSolidEdit } from "react-icons/bi";
 import { FaRegEye } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { MdClear, MdDelete, MdFileDownloadDone } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import LoadingLotie from "../../../components/Lotties/LoadingLotie";
 import { Link } from "react-router-dom";
@@ -42,6 +42,60 @@ const MyRequest = () => {
       setFilter(e.target.value);
 
     }
+
+    const handleDone=(id)=>{
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You are going to change the status to Done!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d90429",
+        cancelButtonColor: "#2b2d42",
+        confirmButtonText: "Yes, do it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            axiosSecure.patch(`/update-request/?id=${id}`,{status: 'done'})
+    .then((d)=>{
+        if (d.data.modifiedCount>0) {
+            refetch()
+             Swal.fire({
+            title: "Updated!",
+            // text: "Request is in Progrss Now.",
+            icon: "success"
+          });
+        }
+    })   
+        }
+      });
+    }
+
+    const handleCancel = (id)=>{
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You are going to Cancel the request!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d90429",
+        cancelButtonColor: "#2b2d42",
+        confirmButtonText: "Yes, cancel it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            axiosSecure.patch(`/update-request/?id=${id}`,{status: 'canceled'})
+    .then((d)=>{
+        if (d.data.modifiedCount>0) {
+            refetch()
+             Swal.fire({
+            title: "Updated!",
+            text: "Request hasbeen canceled.",
+            icon: "success"
+          });
+        }
+       
+    })   
+        }
+      });
+    }
+
     const handleDelete=(id)=>{
         Swal.fire({
             title: "Are you sure?",
@@ -82,8 +136,8 @@ const MyRequest = () => {
         <select onChange={handleFilter} className="select focus:outline-none border-none bg-secondary text-white">
           <option value="">Status</option>
           <option value="pending">Pending</option>
-          <option value="“inprogress”">In Progress</option>
-          <option value="“done”">Done</option>
+          <option value="in progress">In Progress</option>
+          <option value="done">Done</option>
           <option value="canceled">Canceled</option>
         </select>
         </div>
@@ -129,6 +183,12 @@ const MyRequest = () => {
                   <Link to={`/dashboard/edit-request/${item._id}`} className="btn text-lg btn-secondary text-white btn-xs"><BiSolidEdit/></Link>
                   <Link to={`/dashboard/details-request/${item._id}`} className="btn text-lg btn-secondary text-white btn-xs"><FaRegEye /></Link>
                   <button onClick={()=>handleDelete(item._id)} className="btn text-lg btn-secondary text-white btn-xs"><MdDelete /></button>
+                  {
+                    item?.status === 'in progress' ? 
+                   <> <button onClick={()=>handleDone(item._id)} className="btn text-lg btn-secondary text-white btn-xs"><MdFileDownloadDone /></button>
+                  <button onClick={()=>handleCancel(item._id)} className="btn text-lg btn-secondary text-white btn-xs"><MdClear /></button></>
+                  : ''
+                  }
                   
                 </th>
               </tr>

@@ -32,7 +32,7 @@ const SignUp = () => {
         const image = d.user.photoURL
         const user = {name,email,status,role,image}
         publicAxios.patch(`/user?email=${email}`,user)
-            .then((d)=>{
+            .then(()=>{
                 successNotify("Sign Up Succesful")
                     navigate("/");
             })
@@ -54,10 +54,14 @@ const SignUp = () => {
       const district = form.district.value
       const imageInput = form.image.files
       const password = form.password.value
+      const finalPassword = form.finalPassword.value
       const imageFile = {image: imageInput[0]}
       const status = 'active'
       const role = 'donor'
 
+      if (password !== finalPassword) {
+        return setErrMsg("Password Doesn't match")
+      }
       
       const toastId = toast.loading('Creating Account...');
       axios.post(imgbburl,imageFile,{headers:{'content-type': 'multipart/form-data'}})
@@ -76,7 +80,7 @@ const SignUp = () => {
               toast.dismiss(toastId);
               navigate("/");
             })
-            .catch((e) => {
+            .catch(() => {
               toast.error('Something went wrong!');
               toast.dismiss(toastId);
             });
@@ -93,11 +97,6 @@ const SignUp = () => {
         // toast.error('Keep eyes open!');
         setErrMsg(e.message)})
        })
-      
-
-      // console.log({name,email,blood,division,district,password})
-
-    
     }
 
     return (

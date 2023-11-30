@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import useProvider from "../../../hooks/useProvider";
 import { IoMdLogOut } from "react-icons/io";
 import userImage from '../../../assets/user.jpg'
+import BoxContainer from "../../../components/BoxContainer/BoxContainer";
 const Navbar = () => {
   const {user,logOut,successNotify} = useProvider()
 console.log(user);
@@ -30,13 +31,12 @@ const handleLogOut=()=>{
         className={({ isActive }) =>
           isActive ? "px-5 border-[3px] transition-all border-accent py-2" : "px-5 py-2"
         }
-        to={"/available-food"}
-      >
-        Available Foods
+        to={"/dashboard/profile"}
+      >Profile
       </NavLink>
         {
-          user?.email ? <button onClick={handleLogOut} className="flex items-center gap-2 px-5 py-2 text-neutral btn btn-accent">Log Out <IoMdLogOut /></button> :
-          <Link to={'/sign-in'} className="flex items-center gap-2 px-5 py-2 text-neutral btn btn-accent">Sign In <IoMdLogOut /></Link>
+          user?.email ? <button onClick={handleLogOut} className="flex items-center gap-2 px-5 py-2 mt-3 text-neutral btn btn-accent">Log Out <IoMdLogOut /></button> :
+          <Link to={'/sign-in'} className="flex items-center gap-2 px-5 py-2 text-neutral btn mt-3 btn-accent">Sign In <IoMdLogOut /></Link>
         }
       
     </>
@@ -56,37 +56,37 @@ const handleLogOut=()=>{
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 border-[3px] transition-all border-accent py-2"
+            ? "px-5 border-b-[4px] transition-all border-accent py-2"
             : ""
         }
-        to={"/available-food"}
+        to={"/all-donation-requests"}
       >
-        Available Foods
+        Donation Requests
       </NavLink>
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 border-[3px] transition-all border-accent py-2"
+            ? "px-5 border-b-[4px] transition-all border-accent py-2"
             : ""
         }
-        to={"/add-food"}
+        to={"/"}
       >
-        Add Food
+        Blogs
       </NavLink>
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 border-[3px] transition-all border-accent py-2"
+            ? "px-5 border-b-[4px] transition-all border-accent py-2"
             : ""
         }
-        to={"/manage-food"}
+        to={"/"}
       >
-        Manage Food
+        Donate Funds
       </NavLink>
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 border-[3px] transition-all border-accent py-2"
+            ? "px-5 border-b-[4px] transition-all border-accent py-2"
             : ""
         }
         to={"/sign-up"}
@@ -99,10 +99,11 @@ const handleLogOut=()=>{
   return (
     <div className="drawer px-0">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content flex flex-col">
+      <div className="drawer-content  flex flex-col">
         {/* Navbar */}
-        <div className="border-b-[1px] shadow-md border-accent">
-          <div className="navbar mx-auto max-w-7xl justify-between -b-2 border-accent text-[#000]">
+        <div className=" bg-secondary">
+          <BoxContainer>
+          <div className="navbar  text-white  max-w-7xl justify-between -b-2 border-accent">
             <div className="flex-none lg:hidden">
               <label
                 htmlFor="my-drawer-3"
@@ -126,7 +127,7 @@ const handleLogOut=()=>{
             </div>
 
             <Link to={"/"} className="flex-0 md:justify-start justify-center">
-              <img className="w-40" src="/logo-light.png" alt="" />
+              <img className="w-40" src="/logo-dark.png" alt="" />
             </Link>
 
             <div className="flex-1 hidden justify-center lg:flex ">
@@ -164,6 +165,7 @@ const handleLogOut=()=>{
               </ul>
             </div>
           </div>
+          </BoxContainer>
         </div>
         {/* Page content here */}
         <Outlet></Outlet>

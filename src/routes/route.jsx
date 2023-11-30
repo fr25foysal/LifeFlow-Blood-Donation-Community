@@ -17,6 +17,8 @@ import AddBlog from "../dashboard/adminPages/ContentManagement/AddBlog/AddBlog";
 import AllBlogs from "../dashboard/adminPages/ContentManagement/AllBlogs/AllBlogs";
 import ContentManagement from "../dashboard/adminPages/ContentManagement/ContentManagement";
 import EditBlog from "../dashboard/adminPages/ContentManagement/EditBlog/EditBlog";
+import AllDonationRequest from "../pages/AllDonationRequestd/AllDonationRequest";
+import SingleDonationPage from "../pages/SingleDonationPage/SingleDonationPage";
 
 const route = createBrowserRouter([
     {
@@ -26,6 +28,13 @@ const route = createBrowserRouter([
             {
                 path: '/',
                 element: <Home></Home>
+            },
+            {
+                path:'all-donation-requests',
+                element:<AllDonationRequest></AllDonationRequest>
+            },{
+                path: '/view-donation-request/:id',
+                element: <PrivateRoute><SingleDonationPage></SingleDonationPage></PrivateRoute>
             }
         ]
     },
