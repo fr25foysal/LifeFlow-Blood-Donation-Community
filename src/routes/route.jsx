@@ -21,6 +21,7 @@ import AllDonationRequest from "../pages/AllDonationRequestd/AllDonationRequest"
 import SingleDonationPage from "../pages/SingleDonationPage/SingleDonationPage";
 import AllBlogPage from "../pages/AllBlogPage/AllBlogPage";
 import SingleBlogPage from "../pages/SIngleBlogPage/SingleBlogPage";
+import SearchPage from "../pages/SearchPage/SearchPage";
 
 const route = createBrowserRouter([
     {
@@ -45,6 +46,10 @@ const route = createBrowserRouter([
             {
                 path: 'single-blog/:id',
                 element:<SingleBlogPage></SingleBlogPage>
+            },
+            {
+                path: 'search',
+                element: <SearchPage></SearchPage>
             }
         ]
     },

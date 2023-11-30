@@ -8,7 +8,6 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingLotie from '../../../components/Lotties/LoadingLotie';
 import districts from '../../../assets/resources/districts.json'
 import upozilas from '../../../assets/resources/upozillas.json'
-import { data } from 'autoprefixer';
 const UpdateReq = () => {
     const { register, handleSubmit,reset , formState: { errors } } = useForm({
         mode: "onChange",

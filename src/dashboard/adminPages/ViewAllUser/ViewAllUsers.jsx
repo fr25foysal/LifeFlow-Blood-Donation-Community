@@ -209,7 +209,7 @@ const ViewAllUsers = () => {
                     {item.name}
                     <br />
                     <span className="badge font-normal badge-ghost badge-sm">
-                      {item.division} , {item.district}
+                      {item.district} , {item.upazila}
                     </span>
                   </td>
 

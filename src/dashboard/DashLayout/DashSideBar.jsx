@@ -4,10 +4,23 @@ import { FaUser, FaUsers } from "react-icons/fa";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
 import { RiPagesFill } from "react-icons/ri";
 import useUser from "../../hooks/useUser";
+import useProvider from "../../hooks/useProvider";
+import { IoMdLogOut } from "react-icons/io";
 
 const DashSideBar = () => {
   const {data:user} = useUser()
+  const {logOut,successNotify} = useProvider()
 
+  const handleLogOut=()=>{
+    logOut()
+    .then(()=>{
+      successNotify('User Logged Out')
+    })
+    .catch((d)=>{
+      console.error(d.message);
+    })
+    
+  }
     const adminMenus = (
         <>
         <h2>Admin</h2>
@@ -198,25 +211,27 @@ const DashSideBar = () => {
       );
       
     return (
+      <div className="">
         <div className="">
-            <div className="">
-              <Link to={"/"} className="flex justify-center">
-                <img className="w-40" src="/logo-dark.png" alt="" />
-              </Link>
-              <div className="divider bg-white h-[1px]"></div> 
-              <div>
-              <ul className="menu gap-y-3 p-4 w-[70%] h-full ">
-        
-          {/* {user?.role === 'admin'donorMenus} */}
-          {
-          (user?.role === "admin") ? adminMenus : (user?.role === "donor") ? donorMenus : volentMenus
-          }
-        </ul>
-              </div>
-            </div>
-           
-
+          <Link to={"/"} className="flex justify-center">
+            <img className="w-40" src="/logo-dark.png" alt="" />
+          </Link>
+          <div className="divider bg-white h-[1px]"></div>
+          <div>
+            <ul className="menu gap-y-3 p-4 w-[70%] h-full ">
+              {/* {user?.role === 'admin'donorMenus} */}
+              {user?.role === "admin"
+                ? adminMenus
+                : user?.role === "donor"
+                ? donorMenus
+                : volentMenus}
+            </ul>
           </div>
+        </div>
+        <div>
+        <button onClick={handleLogOut} className="flex items-center gap-2 px-5 py-2 mt-3 text-neutral btn ">Log Out <IoMdLogOut /></button>
+        </div>
+      </div>
     );
 };
 

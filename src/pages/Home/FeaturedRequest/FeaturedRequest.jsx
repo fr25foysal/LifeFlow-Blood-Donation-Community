@@ -5,7 +5,7 @@ import FeaturedRequestCard from "./FeaturedRequestCard";
 const FeaturedRequest = () => {
    const axiosPublic = usePublicAxios()
     const {data:{result},isLoading} = useQuery({
-        queryKey: ['dashboard-requests'],
+        queryKey: ['featured-donation-requests'],
         queryFn: async()=>{
             const res = await axiosPublic.get(`/all-donation-reqs?filter=pending&perPage=${5}`)
             return res.data

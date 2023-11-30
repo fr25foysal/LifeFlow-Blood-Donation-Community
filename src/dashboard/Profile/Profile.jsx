@@ -5,7 +5,7 @@ import Button from "../../components/Button/Button";
 import LoadingLotie from "../../components/Lotties/LoadingLotie";
 import { FaUserEdit } from "react-icons/fa";
 import districts from "../../assets/resources/districts.json"
-import divisions from "../../assets/resources/divisions.json"
+import upazila from "../../assets/resources/upozillas.json"
 import axios from "axios";
 import toast from "react-hot-toast";
 import useUser from "../../hooks/useUser";
@@ -23,8 +23,8 @@ const Profile = () => {
         const form = e.target
       const name = form.name.value
       const blood = form.blood.value
-      const division = form.division.value
       const district = form.district.value
+      const upazila = form.upazila.value
       const imageInput = form.image.files
       const imageFile = {image: imageInput[0]}
        
@@ -32,7 +32,7 @@ const Profile = () => {
       axios.post(imgbburl,imageFile,{headers:{'content-type': 'multipart/form-data'}})
        .then(d=>{
         const image = d.data.data.display_url || currentUser.image
-        const updatedUser = {name,blood,division,district,image}
+        const updatedUser = {name,blood,upazila,district,image}
         console.log(updatedUser);
         axiosSecure.patch(`/user?email=${user?.email}`,updatedUser)
         .then((d)=>{
@@ -76,9 +76,10 @@ const Profile = () => {
                 <span className="text-xl font-medium">{data.name}</span>{" "}
               </p>
               <p className="text-base py-2">
-                Division: <br />{" "}
-                <span className="text-xl font-medium">{data.division}</span>{" "}
+                District: <br />{" "}
+                <span className="text-xl font-medium">{data.district}</span>{" "}
               </p>
+              
               <p className="text-base py-2 pb-10">
                 User Email: <br />{" "}
                 <span className="text-xl font-medium">{user.email}</span>{" "}
@@ -148,22 +149,6 @@ const Profile = () => {
                       <div className="flex gap-4">
                         <div className="relative flex-1">
                           <select
-                            name="division"
-                            required
-                            className=" h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal  outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200  focus:border-2 "
-                          >
-                            {divisions.map((division) => (
-                              <option key={division.id} value={division.name}>
-                                {division.name}
-                              </option>
-                            ))}
-                          </select>
-                          <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                            Division
-                          </label>
-                        </div>
-                        <div className="relative flex-1">
-                          <select
                             name="district"
                             required
                             className=" h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal  outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200  focus:border-2 "
@@ -176,6 +161,22 @@ const Profile = () => {
                           </select>
                           <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                             District
+                          </label>
+                        </div>
+                        <div className="relative flex-1">
+                          <select
+                            name="upazila"
+                            required
+                            className=" h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal  outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200  focus:border-2 "
+                          >
+                            {upazila.map((division) => (
+                              <option key={division.id} value={division.name}>
+                                {division.name}
+                              </option>
+                            ))}
+                          </select>
+                          <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                            Upazila
                           </label>
                         </div>
                       </div>
@@ -201,8 +202,8 @@ const Profile = () => {
               </p>
 
               <p className="text-base py-2">
-                District: <br />{" "}
-                <span className="text-xl font-medium">{data.district}</span>{" "}
+              Upazila: <br />{" "}
+                <span className="text-xl font-medium">{data.upazila}</span>{" "}
               </p>
             </div>
           </div>

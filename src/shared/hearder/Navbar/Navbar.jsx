@@ -3,6 +3,7 @@ import useProvider from "../../../hooks/useProvider";
 import { IoMdLogOut } from "react-icons/io";
 import userImage from '../../../assets/user.jpg'
 import BoxContainer from "../../../components/BoxContainer/BoxContainer";
+import { BiSearch } from "react-icons/bi";
 const Navbar = () => {
   const {user,logOut,successNotify} = useProvider()
 
@@ -20,7 +21,7 @@ const handleLogOut=()=>{
     <>
       <NavLink
         className={({ isActive }) =>
-          isActive ? "px-5 border-l-[3px] transition-all border-accent py-2" : "px-5 py-2"
+          isActive ? "px-5 border-l-[3px] transition-all border-accent py-2" : "px-5 py-2 btn my-2"
         }
         to={"/dashboard"}
       >
@@ -28,7 +29,7 @@ const handleLogOut=()=>{
       </NavLink>
       <NavLink
         className={({ isActive }) =>
-          isActive ? "px-5 border-[3px] transition-all border-accent py-2" : "px-5 py-2"
+          isActive ? "px-5 border-[3px] transition-all border-accent py-2" : "px-5 py-2 btn my-2"
         }
         to={"/dashboard/profile"}
       >Profile
@@ -85,13 +86,26 @@ const handleLogOut=()=>{
       <NavLink
         className={({ isActive }) =>
           isActive
+            ? "px-5 flex items-center gap-2 border-b-[4px] transition-all border-accent py-2"
+            : "5 flex items-center gap-2"
+        }
+        to={"/search"}
+      >
+        Search <BiSearch></BiSearch>
+      </NavLink>
+      {
+        !user ? <NavLink
+        className={({ isActive }) =>
+          isActive
             ? "px-5 border-b-[4px] transition-all border-accent py-2"
             : ""
         }
         to={"/sign-up"}
       >
         Sign Up
-      </NavLink>
+      </NavLink> : ''
+      }
+      
 
     </>
   );
@@ -100,7 +114,7 @@ const handleLogOut=()=>{
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content  flex flex-col">
         {/* Navbar */}
-        <div className=" bg-secondary">
+        <div className="fixed w-full z-10 bg-secondary">
           <BoxContainer>
           <div className="navbar  text-white  max-w-7xl justify-between -b-2 border-accent">
             <div className="flex-none lg:hidden">
@@ -159,7 +173,7 @@ const handleLogOut=()=>{
                   
                 </div>
               </div>
-              <ul className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+              <ul className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-error rounded-box w-52">
                 {profileMenu}
               </ul>
             </div>
@@ -167,7 +181,10 @@ const handleLogOut=()=>{
           </BoxContainer>
         </div>
         {/* Page content here */}
-        <Outlet></Outlet>
+        <div className="mt-[76px]">
+          <Outlet></Outlet>
+        </div>
+        
       </div>
       <div className="drawer-side">
         <label

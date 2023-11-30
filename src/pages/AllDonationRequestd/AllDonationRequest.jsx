@@ -7,7 +7,7 @@ import PageTitle from "../../components/PageTitle/PageTitle";
 const AllDonationRequest = () => {
     const axiosPublic = usePublicAxios()
     const {data:{result},isLoading} = useQuery({
-        queryKey: ['dashboard-requests'],
+        queryKey: ['all-donation-requests'],
         queryFn: async()=>{
             const res = await axiosPublic.get(`/all-donation-reqs?filter=pending&perPage=${0}`)
             return res.data

@@ -13,7 +13,7 @@ const MyRequest = () => {
    const [filter,setFilter] = useState('')
     const axiosSecure = useAxiosSecure()
     const {data:{result,dataCount},isLoading,refetch} = useQuery({
-        queryKey: ['dashboard-requests',page,filter],
+        queryKey: ['dasboard-data',page,filter],
         queryFn: async()=>{
             const res = await axiosSecure.get(`/all-donation-reqs?page=${page}&filter=${filter}`)
             return res.data

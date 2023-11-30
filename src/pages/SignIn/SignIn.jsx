@@ -20,19 +20,20 @@ const SignIn = () => {
     const handleGoogleLogin=()=>{
       googleLogin()
       .then((d)=>{
-        // axios.post('/jwt',{email: e.user.email}, {withCredentials: true})
-        // .then(res=> console.log(res.data))
         const name = d.user.displayName
         const email = d.user.email
         const status = 'active'
         const role = 'donor'
+        const blood = 'B+'
+        const upazila = 'Monohargonj'
+        const district = 'Dinajpur'
         const image = d.user.photoURL
-        const user = {name,email,status,role,image}
+        const user = {name,email,status,blood,role,image,district,upazila}
         publicAxios.patch(`/user?email=${email}`,user)
-        .then((d)=>{
-            successNotify("Sign Up Succesful")
-            navigate("/");
-        })
+            .then(()=>{
+                successNotify("Sign Up Succesful")
+                 navigate("/");
+            })
       })
       .catch(e=>{
         setErrMsg(e.message)
