@@ -51,7 +51,7 @@ const publicAxios = usePublicAxios()
         onAuthStateChanged(auth, currentuser=>{
             setUser(currentuser)
             // const email = currentuser?.email || user?.email
-            console.log(currentuser);
+            // console.log(currentuser);
             if (currentuser) {
                 console.log('order');
                 publicAxios.post('/jwt',{email: currentuser.email})
