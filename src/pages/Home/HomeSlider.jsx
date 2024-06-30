@@ -30,5 +30,5 @@ const HomeSlider = () => {
       </div>
     );
 };
-
+console.log("Welcome");
 export default HomeSlider;
