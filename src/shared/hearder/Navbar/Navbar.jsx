@@ -46,7 +46,7 @@ const handleLogOut=()=>{
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 border-b-[4px] transition-all border-accent py-2"
+            ? "px-5 border-b-[4px] transition-0.001s border-accent py-2"
             : ""
         }
         to={"/"}
@@ -56,7 +56,7 @@ const handleLogOut=()=>{
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 border-b-[4px] transition-all border-accent py-2"
+            ? "px-5 border-b-[4px] transition-0.001s border-accent py-2"
             : ""
         }
         to={"/all-donation-requests"}
@@ -66,7 +66,7 @@ const handleLogOut=()=>{
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 border-b-[4px] transition-all border-accent py-2"
+            ? "px-5 border-b-[4px] transition-0.001s border-accent py-2"
             : ""
         }
         to={"/all-blogs"}
@@ -76,17 +76,17 @@ const handleLogOut=()=>{
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 border-b-[4px] transition-all border-accent py-2"
+            ? "px-5 border-b-[4px] transition-0.001s border-accent py-2"
             : ""
         }
-        to={"/"}
+        to={"/about-us"}
       >
-        Donate Funds
+        About Us
       </NavLink>
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "px-5 flex items-center gap-2 border-b-[4px] transition-all border-accent py-2"
+            ? "px-5 flex items-center gap-2 border-b-[4px] transition-0.001s border-accent py-2"
             : "5 flex items-center gap-2"
         }
         to={"/search"}

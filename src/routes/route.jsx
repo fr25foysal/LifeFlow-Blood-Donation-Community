@@ -22,6 +22,7 @@ import SingleDonationPage from "../pages/SingleDonationPage/SingleDonationPage";
 import AllBlogPage from "../pages/AllBlogPage/AllBlogPage";
 import SingleBlogPage from "../pages/SIngleBlogPage/SingleBlogPage";
 import SearchPage from "../pages/SearchPage/SearchPage";
+import AboutUs from "../pages/AboutUs/AboutUs";
 
 const route = createBrowserRouter([
     {
@@ -50,6 +51,11 @@ const route = createBrowserRouter([
             {
                 path: 'search',
                 element: <SearchPage></SearchPage>
+            }
+            ,
+            {
+                path: 'about-us',
+                element: <AboutUs></AboutUs>
             }
         ]
     },
