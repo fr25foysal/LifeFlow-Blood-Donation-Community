@@ -1,5 +1,4 @@
 import BoxContainer from "../../components/BoxContainer/BoxContainer";
-import Button from "../../components/Button/Button";
 import PageTitle from "../../components/PageTitle/PageTitle";
 
 const AboutUs = () => {

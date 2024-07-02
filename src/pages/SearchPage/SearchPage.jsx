@@ -8,7 +8,8 @@ import { useQuery } from '@tanstack/react-query';
 import usePublicAxios from '../../hooks/usePublicAxios';
 const SearchPage = () => {
 
-    
+   districts.sort((a, b) =>a.name.localeCompare(b.name));
+   upazilas.sort((a, b) =>a.name.localeCompare(b.name));
     const [page,setPage] = useState(0)
    const [filter,setFilter] = useState('')
    const [blood,setBlood] = useState('')
