@@ -60,9 +60,10 @@ const SearchPage = () => {
       }
   return (
     <div className="p-10">
-      <PageTitle title={"Search Donors"}></PageTitle>
+      
       <BoxContainer>
-        <form onSubmit={handleSearch} className="grid grid-cols-5 gap-5 py-10">
+      <PageTitle title={"Search Donors"}></PageTitle>
+        <form onSubmit={handleSearch} className="grid grid-cols-5 gap-5 justify-center py-10">
           <div className="relative flex-1">
             <select
               name="blood"
@@ -117,7 +118,7 @@ const SearchPage = () => {
             <div className="relative h-11 w-full min-w-[200px]">
               <input
                 className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3  text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-700 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                placeholder=" "
+                placeholder=""
                 name="email"
                 
                 type="email"
@@ -128,10 +129,10 @@ const SearchPage = () => {
             </div>
           </div>
           <div>
-            <button className="btn text-white btn-secondary">Search </button>
+            <button className="btn text-white btn-secondary min-w-[200px]">Search </button>
           </div>
         </form>
-        <div className="overflow-x-auto bg-accent rounded-lg p-10 text-white m-10">
+        <div className="overflow-x-auto bg-accent rounded-lg p-10 text-white">
           <div className="flex items-center gap-5">
             <h2 className="text-xl font-medium">Filter: </h2>
             <select
@@ -182,7 +183,25 @@ const SearchPage = () => {
                     <div className="flex items-center gap-3">
                       <div>
                         <div className="font-semibold capitalize">
-                          {item.blood}
+                         {
+                          item.blood === "AP"
+                           ? "A Positive"
+                            : item.blood === "AN"
+                           ? "A Negative"
+                            : item.blood === "BP"
+                           ? "B Positive"
+                            : item.blood === "BN"
+                           ? "B Negative"
+                            : item.blood === "ABP"
+                           ? "AB Positive"
+                            : item.blood === "ABN"
+                           ? "AB Negative"
+                            : item.blood === "OP"
+                           ? "O Positive"
+                            : item.blood === "ON"
+                           ? "O Negative"
+                            : ""
+                         }
                         </div>
                       </div>
                     </div>
