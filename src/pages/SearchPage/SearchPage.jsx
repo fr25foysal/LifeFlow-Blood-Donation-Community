@@ -11,20 +11,21 @@ const SearchPage = () => {
    districts.sort((a, b) =>a.name.localeCompare(b.name));
    upazilas.sort((a, b) =>a.name.localeCompare(b.name));
     const [page,setPage] = useState(0)
-   const [filter,setFilter] = useState('')
+   const [filter,setFilter] = useState('active')
    const [blood,setBlood] = useState('')
    const [district,setDistrict] = useState('')
    const [upazila,setUpazila] = useState('')
    const [email,setEmail] = useState('')
     const axiosPublic = usePublicAxios()
     const {data:{result,dataCount},isLoading,refetch} = useQuery({
-        queryKey: ['donor-requests',page,filter],
+        queryKey: ['donor-requests',page,filter,blood, district, upazila,email],
         queryFn: async()=>{
-            const res = await axiosPublic.get(`/donors?page=${page}&filter=${filter}&blood=${''}&district=${""}&upazila=${""}&email=${''}`)
+            const res = await axiosPublic.get(`/donors?page=${page}&filter=${filter}&blood=${blood}&district=${district}&upazila=${upazila}&email=${""}`)
             return res.data
         },
         initialData: {result: [],dataCount: 0}
     })
+    
     const postPerPage = 5
     const totalData = Math.ceil(dataCount/postPerPage)
     const pageNumbersArr = [...new Array(totalData).fill(0)]
@@ -43,35 +44,38 @@ const SearchPage = () => {
       }
       const handleFilter= (e)=>{
         setFilter(e.target.value);
-  
       }
       const handleSearch= (e) =>{
         e.preventDefault()
-        // const blood = e.target.blood.value
-        const district = e.target.district.value
-        const upazila = e.target.upazila.value
+        const blood = e.target.blood.value
+        const upazila = e.target.district.value
+        const district = e.target.division.value
         const email = e.target.email.value
 
-        console.log(email);
+        console.log(blood);
+        setDistrict(district)
+        setBlood(blood)
+        setUpazila(upazila)
+        setEmail(email)
       }
   return (
     <div className="p-10">
       <PageTitle title={"Search Donors"}></PageTitle>
       <BoxContainer>
-        <form onClick={handleSearch} className="grid grid-cols-5 gap-5 py-10">
+        <form onSubmit={handleSearch} className="grid grid-cols-5 gap-5 py-10">
           <div className="relative flex-1">
             <select
               name="blood"
               className=" h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 text-sm font-normal  outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200  focus:border-2 "
             >
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
+              <option value="AP">A+</option>
+              <option value="AN">A-</option>
+              <option value="BP">B+</option>
+              <option value="BN">B-</option>
+              <option value="ABP">AB+</option>
+              <option value="ABN">AB-</option>
+              <option value="OP">O+</option>
+              <option value="ON">O-</option>
             </select>
             <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
               Blood Group
@@ -134,7 +138,7 @@ const SearchPage = () => {
               onChange={handleFilter}
               className="select focus:outline-none border-none bg-secondary text-white"
             >
-              <option value="">Status</option>
+              {/* <option value="">Status</option> */}
               <option value="active">Active</option>
               <option value="blocked">Blocked</option>
             </select>
